@@ -204,13 +204,14 @@ int run(int argc, char **argv)
 }
 
 void chatterCallBack(const std_msgs::String::ConstPtr& msg) {
-    ROS_INFO("I heard: [%s]", msg->data.c_str());
+    //ROS_INFO("I heard: [%s]", msg->data.c_str());
+    my_serial.write(msg->data.c_str());
 }
 
 int main(int argc, char **argv) {
 	ros::init(argc , argv, "serial_port");
 	ros::NodeHandle nh ;
-	ros::Publisher serial0_tx = nh.advertise<std_msgs::String>("uart1_tx",1000);
+	ros::Publisher serial0_tx = nh.advertise<std_msgs::String>("uart1_rx",1000);
 	ros::Subscriber serial0_rx = nh.subscribe("uart1_tx", 1000, chatterCallBack);
 	ros::Rate loop_rate(10);
 	initSerial();
