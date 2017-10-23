@@ -56,6 +56,19 @@ void enumerate_ports()
 //     cerr << "<baudrate> [test string]" << endl;
 // }
 
+bool openSerial()
+{
+	if(my_serial.isOpen())
+		return true; 
+	my_serial.open();
+	return my_serial.isOpen();
+}
+
+void connectSerial() {
+
+	
+}
+
 void initSerial()
 {
 	my_serial.setPort("/dev/ttyUSB0");
@@ -63,6 +76,9 @@ void initSerial()
  	serial::Timeout timeout	= serial::Timeout::simpleTimeout(1000);
  	my_serial.setTimeout(timeout);
  	my_serial.setBaudrate (115200);
+ 	while(openSerial() == false) {
+ 		ROS_INFO("Serial port is not connected, trying to open agin...");
+ 	}
 }
 
 int run(int argc, char **argv)
@@ -98,11 +114,12 @@ int run(int argc, char **argv)
   // cout << "Is the serial port open?";
    if(my_serial.isOpen())
    {
-   	cout << " Yes." << endl;
-   	 my_serial.readline(result);
-   }else {
-   		cout << " No." << endl;
+   		//cout << " Yes." << endl;
+   	 	my_serial.readline(result);
    }
+   //else {
+   	//	cout << " No." << endl;
+   //}
   //   cout << " Yes." << endl;
   // else
   //   cout << " No." << endl;
@@ -195,7 +212,7 @@ int main(int argc, char **argv) {
 	while(ros::ok()) {
 		std_msgs::String msg;
 		std::stringstream ss;
-		run(argc, argv);
+		if(openSerial()==true) run(argc, argv);
 		ss<<result;
 		msg.data = ss.str();
 		serial0_pub.publish(msg);
