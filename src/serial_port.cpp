@@ -203,10 +203,15 @@ int run(int argc, char **argv)
   return 0;
 }
 
+void chatterCallBack(const std_msgs::String::ConstPtr& msg) {
+    ROS_INFO("I heard: [%s]", msg->data.c_str());
+}
+
 int main(int argc, char **argv) {
 	ros::init(argc , argv, "serial_port");
 	ros::NodeHandle nh ;
-	ros::Publisher serial0_pub = nh.advertise<std_msgs::String>("uart1",1000);
+	ros::Publisher serial0_tx = nh.advertise<std_msgs::String>("uart1_tx",1000);
+	ros::Subscriber serial0_rx = n.subscribe("uart1_rx", 1000, chatterCallBack);
 	ros::Rate loop_rate(10);
 	initSerial();
 	while(ros::ok()) {
@@ -215,7 +220,7 @@ int main(int argc, char **argv) {
 		if(openSerial()==true) run(argc, argv);
 		ss<<result;
 		msg.data = ss.str();
-		serial0_pub.publish(msg);
+		serial0_tx.publish(msg);
 		ros::spinOnce();
 		loop_rate.sleep();
 
