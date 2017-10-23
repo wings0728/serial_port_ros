@@ -211,7 +211,7 @@ int main(int argc, char **argv) {
 	ros::init(argc , argv, "serial_port");
 	ros::NodeHandle nh ;
 	ros::Publisher serial0_tx = nh.advertise<std_msgs::String>("uart1_tx",1000);
-	ros::Subscriber serial0_rx = n.subscribe("uart1_rx", 1000, chatterCallBack);
+	ros::Subscriber serial0_rx = n.subscribe("uart1_tx", 1000, chatterCallBack);
 	ros::Rate loop_rate(10);
 	initSerial();
 	while(ros::ok()) {
