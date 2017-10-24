@@ -1,0 +1,6 @@
+<launch>
+
+    <node pkg="serial_port" name="serial_port_tx" type="serial_port_tx"/>
+    <node pkg="serial_port" name="serial_port_rx" type="serial_port_rx"/>
+
+</launch>

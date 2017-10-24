@@ -134,8 +134,8 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
- add_executable(serial_port src/serial_port.cpp)
-
+ add_executable(serial_port_rx src/serial_port_rx.cpp src/serial_port.cpp)
+ add_executable(serial_port_tx src/serial_port_tx.cpp src/serial_port.cpp)
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -144,10 +144,13 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(serial_port ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
+add_dependencies(serial_port_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(serial_port_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 ## Specify libraries to link a library or executable target against
- target_link_libraries(serial_port
+ target_link_libraries(serial_port_rx
+   ${catkin_LIBRARIES}
+ )
+  target_link_libraries(serial_port_tx
    ${catkin_LIBRARIES}
  )
 
